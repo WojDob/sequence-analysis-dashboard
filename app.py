@@ -1,34 +1,40 @@
 # Run this app with `python app.py` and
 # visit http://127.0.0.1:8050/ in your web browser.
 
+from io import StringIO
 from dash import Dash, html, dcc
-import plotly.express as px
-import pandas as pd
+from dash.dependencies import Input, Output, State
+from Bio import SeqIO
 
 app = Dash(__name__)
 
-# assume you have a "long-form" data frame
-# see https://plotly.com/python/px-arguments/ for more options
-df = pd.DataFrame({
-    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-    "Amount": [4, 1, 2, 2, 4, 5],
-    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-})
+app.layout = html.Div(
+    [
+        dcc.Textarea(
+            id="textarea-state-example",
+            value=">example_1\nVLSISYSRSESSLETIGQRKPSTFSWSSRAASRSSWERGP",
+            style={"width": "100%", "height": 200},
+        ),
+        html.Button("Submit", id="textarea-state-example-button", n_clicks=0),
+        html.Div(id="textarea-state-example-output", style={"whiteSpace": "pre-line"}),
+    ]
+)
 
-fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
+@app.callback(
+    Output("textarea-state-example-output", "children"),
+    Input("textarea-state-example-button", "n_clicks"),
+    State("textarea-state-example", "value"),
+)
+def update_output(n_clicks, value):
+    if n_clicks > 0:
+        fasta_io = StringIO(value)
+        records = SeqIO.parse(fasta_io, "fasta")
+        teststring = ""
+        for rec in records:
+            teststring += rec
+            fasta_io.close()
+        return f"You have entered: \n{teststring}"
 
-app.layout = html.Div(children=[
-    html.H1(children='Hello Dash'),
 
-    html.Div(children='''
-        Dash: A web application framework for your data.
-    '''),
-
-    dcc.Graph(
-        id='example-graph',
-        figure=fig
-    )
-])
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run_server(debug=True)
