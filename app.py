@@ -4,7 +4,6 @@ from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 from Bio import SeqIO
 from Bio.SeqUtils import MeltingTemp
-from Bio.Seq import Seq
 import pandas as pd
 import plotly.express as px
 
