@@ -105,8 +105,10 @@ app.layout = html.Div(
         ),
         html.Button("Submit", id="input-button", n_clicks=0),
         html.Div(id="textarea-state-output", style={"whiteSpace": "pre-line"}),
+        html.Div(className = "graph_wrapper", children = [
         html.Div(dcc.Graph(id="chart")),
-        html.Div(dcc.Graph(id="pie_chart")),
+        html.Div(dcc.Graph(id="pie_chart"))    
+        ])
     ]
 )
 
