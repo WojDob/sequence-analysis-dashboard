@@ -12,8 +12,11 @@ app = Dash(__name__)
 
 
 @app.callback(
-    [Output("textarea-state-output", "children"), Output("chart", "figure"),
-    Output("pie_chart", "figure")],
+    [
+        Output("textarea-state-output", "children"),
+        Output("chart", "figure"),
+        Output("pie_chart", "figure"),
+    ],
     Input("input-button", "n_clicks"),
     State("textarea-state", "value"),
 )
@@ -70,6 +73,7 @@ def get_sequence_graph_figure(record):
     fig = px.bar(df, x="Symbol", y="Count", color="Count")
     return fig
 
+
 def get_sequence_pie_chart(record):
     symbols, counts = count_symbols(record.seq)
     df = pd.DataFrame(
@@ -78,8 +82,9 @@ def get_sequence_pie_chart(record):
             "Count": counts,
         }
     )
-    fig = px.pie(df, values="Count", names="Symbol", hole=.3)
+    fig = px.pie(df, values="Count", names="Symbol", hole=0.3)
     return fig
+
 
 def count_symbols(sequence):
     contents = {}
@@ -105,10 +110,13 @@ app.layout = html.Div(
         ),
         html.Button("Submit", id="input-button", n_clicks=0),
         html.Div(id="textarea-state-output", style={"whiteSpace": "pre-line"}),
-        html.Div(className = "graph_wrapper", children = [
-        html.Div(dcc.Graph(id="chart")),
-        html.Div(dcc.Graph(id="pie_chart"))
-        ])
+        html.Div(
+            className="graph_wrapper",
+            children=[
+                html.Div(dcc.Graph(id="chart")),
+                html.Div(dcc.Graph(id="pie_chart")),
+            ],
+        ),
     ]
 )
 
