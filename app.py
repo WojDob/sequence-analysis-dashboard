@@ -3,6 +3,7 @@ from dash import Dash, html, dcc
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
 from Bio import SeqIO
+from Bio.SeqUtils import MeltingTemp
 import pandas as pd
 import plotly.express as px
 
@@ -41,10 +42,14 @@ def get_sequence_statistics(record):
     if is_nucleotide(sequence):
         try:
             complementary = sequence.reverse_complement()
+            meltingTemp = MeltingTemp.Tm_Wallace(sequence)
+            translation = sequence.translate()
         except ValueError as e:
             output += f"ERROR - {str(e)}"
         else:
             output += f"complementary sequence: {complementary}"
+            output += f"\n melting temperature of a sequence: {meltingTemp}"
+            output += f"\n translated sequence: {translation}"
     return output
 
 
