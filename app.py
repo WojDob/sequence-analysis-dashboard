@@ -12,7 +12,8 @@ app = Dash(__name__)
 
 
 @app.callback(
-    [Output("textarea-state-output", "children"), Output("chart", "figure"), Output("pie_chart", "figure")],
+    [Output("textarea-state-output", "children"), Output("chart", "figure"),
+    Output("pie_chart", "figure")],
     Input("input-button", "n_clicks"),
     State("textarea-state", "value"),
 )
