@@ -24,8 +24,8 @@ def update_output(n_clicks, value):
     if n_clicks > 0 and value:
         record = string_to_seq(value)
         stats = get_sequence_statistics(record)
-        fig = get_sequence_graph_figure(record)
-        pie_chart = get_sequence_pie_chart(record)
+        fig = get_sequence_bar_figure(record)
+        pie_chart = get_sequence_pie_figure(record)
         return stats, fig, pie_chart
     raise PreventUpdate
 
@@ -40,10 +40,10 @@ def string_to_seq(fasta_string):
 def get_sequence_statistics(record):
     sequence = record.seq
     output = f"""
-        id: {record.id}
-        description {record.description}
-        length: {len(sequence)}
-    """
+id: {record.id}
+description: {record.description}
+length: {len(sequence)}
+"""
     if is_nucleotide(sequence):
         try:
             complementary = sequence.reverse_complement()
@@ -53,8 +53,8 @@ def get_sequence_statistics(record):
             output += f"ERROR - {str(e)}"
         else:
             output += f"complementary sequence: {complementary}"
-            output += f"\n melting temperature of a sequence: {meltingTemp}"
-            output += f"\n translated sequence: {translation}"
+            output += f"\nmelting temperature of a sequence: {meltingTemp}"
+            output += f"\ntranslated sequence: {translation}"
     return output
 
 
@@ -62,7 +62,7 @@ def is_nucleotide(sequence):
     return not sequence.upper().strip("ATGCNU")
 
 
-def get_sequence_graph_figure(record):
+def get_sequence_bar_figure(record):
     symbols, counts = count_symbols(record.seq)
     df = pd.DataFrame(
         {
@@ -74,7 +74,7 @@ def get_sequence_graph_figure(record):
     return fig
 
 
-def get_sequence_pie_chart(record):
+def get_sequence_pie_figure(record):
     symbols, counts = count_symbols(record.seq)
     df = pd.DataFrame(
         {
