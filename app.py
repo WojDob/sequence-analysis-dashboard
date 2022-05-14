@@ -94,4 +94,5 @@ app.layout = html.Div(
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    print("If you are running this application through docker, go to 'localhost:8050'")
+    app.run_server(debug=True, host="0.0.0.0")
