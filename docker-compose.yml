@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   sequenceanalysisdashboard:
-    image: sequenceanalysisdashboard
+    image: seq-app
     build:
       context: .
       dockerfile: ./Dockerfile
